@@ -15,9 +15,8 @@ class WhatsAppHomeState extends State<WhatsAppHome>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    tabController = new TabController(length: 4, vsync: this);
+    tabController = new TabController(initialIndex:1,length: 4, vsync: this);
   }
 
   @override
@@ -32,8 +31,7 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             tabs: <Widget>[
               new Tab(icon: new Icon(Icons.camera_alt)),
               new Tab(
-                text: "چت ها",
-              ),
+                text: "چت ها",),
               new Tab(
                 text: "وضعیت",
               ),
