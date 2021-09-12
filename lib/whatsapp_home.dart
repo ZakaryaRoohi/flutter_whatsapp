@@ -52,7 +52,14 @@ class WhatsAppHomeState extends State<WhatsAppHome>
         new ChatScreen(),
         new StatusScreen(),
         new CallScreen()
-      ]),
+      ]
+      ),
+      floatingActionButton: new FloatingActionButton(
+        // backgroundColor: new Color(0xff25d366),
+        backgroundColor: Theme.of(context).accentColor,
+        child: new Icon(Icons.message, color: Colors.white,),
+          onPressed:(){print('open Chat!');}
+      ),
     );
   }
 }
