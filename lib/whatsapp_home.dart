@@ -16,13 +16,14 @@ class WhatsAppHomeState extends State<WhatsAppHome>
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(initialIndex:1,length: 4, vsync: this);
+    tabController = new TabController(initialIndex: 1, length: 4, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
+        backgroundColor: new Color(0xff075e54),
         title: new Text('واتساپ'),
         elevation: 5,
         bottom: new TabBar(
@@ -31,7 +32,8 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             tabs: <Widget>[
               new Tab(icon: new Icon(Icons.camera_alt)),
               new Tab(
-                text: "چت ها",),
+                text: "چت ها",
+              ),
               new Tab(
                 text: "وضعیت",
               ),
@@ -41,25 +43,52 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             ]),
         actions: [
           new Icon(Icons.search),
-          new Padding(padding: const EdgeInsets.symmetric(horizontal: 8)),
-          new Icon(Icons.more_vert)
+          new Padding(padding: const EdgeInsets.symmetric(horizontal: 5)),
+          new PopupMenuButton<String>(onSelected: (String choice) {
+            print(choice);
+          }, itemBuilder: (BuildContext context) {
+            return [
+              new PopupMenuItem(
+                  value: "new_group",
+                  child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Row(
+                      children: [
+                        Text("گروه جدید", textDirection: TextDirection.rtl)
+                      ],
+                    ),
+                  )),
+              new PopupMenuItem(
+                value: 'setting',
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    children: [
+                      Text('تنظیمات', textDirection: TextDirection.rtl)
+                    ],
+                  ),
+                ),
+              )
+            ];
+          })
         ],
       ),
-      body: new TabBarView(
-          controller: tabController,
-          children: <Widget>[
+      body: new TabBarView(controller: tabController, children: <Widget>[
         new CameraScreen(),
         new ChatScreen(),
         new StatusScreen(),
         new CallScreen()
-      ]
-      ),
+      ]),
       floatingActionButton: new FloatingActionButton(
-        // backgroundColor: new Color(0xff25d366),
-        backgroundColor: Theme.of(context).accentColor,
-        child: new Icon(Icons.message, color: Colors.white,),
-          onPressed:(){print('open Chat!');}
-      ),
+          // backgroundColor: new Color(0xff25d366),
+          backgroundColor: Theme.of(context).accentColor,
+          child: new Icon(
+            Icons.message,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            print('open Chat!');
+          }),
     );
   }
 }

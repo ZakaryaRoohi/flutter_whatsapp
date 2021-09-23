@@ -9,6 +9,9 @@ class ChatScreen extends StatelessWidget {
         itemBuilder: (context,index){
         return new Column(
           children: [
+            new Divider(
+              height: 10,
+            ),
             new ListTile(
               leading: new CircleAvatar(
                 backgroundImage:new NetworkImage(dummyData[index].avatarUrl) ,
@@ -24,6 +27,12 @@ class ChatScreen extends StatelessWidget {
                       dummyData[index].time,style: new TextStyle(color: Colors.grey,fontSize: 14),
                   )
                 ],
+              ),
+              subtitle: new Container(
+                padding:const EdgeInsets.only(top: 5),
+                child: new Text(
+                  dummyData[index].message, style: TextStyle( color: Colors.grey),
+                ),
               ),
             )
           ],

@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'WatsApp',
       theme: ThemeData(
         fontFamily: 'Vazir',
+
           primaryColor:new Color(0xff075e54),
         accentColor: new Color(0xff25d366)
       ),
