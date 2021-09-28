@@ -13,72 +13,129 @@ class WhatsAppHomeState extends State<WhatsAppHome>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
 
+  late Map<String, SliverAppBar> appBarList;
+  String _currentAppBar = 'mainAppBar';
+
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(initialIndex: 1, length: 4, vsync: this);
+    tabController = TabController(initialIndex: 1, length: 4, vsync: this);
+    //اپ بار اصلی برنامه
+    SliverAppBar mainAppBar = SliverAppBar(
+      backgroundColor: Color(0xff075e54),
+      title: Text('واتساپ'),
+      pinned: true,
+      floating: true,
+      elevation: 5,
+      bottom: TabBar(
+          controller: tabController,
+          indicatorColor: Colors.white,
+          tabs: <Widget>[
+            Tab(icon: new Icon(Icons.camera_alt)),
+            Tab(
+              text: "چت ها",
+            ),
+            Tab(
+              text: "وضعیت",
+            ),
+            Tab(
+              text: "تماس ها",
+            ),
+          ]),
+      actions: [
+        GestureDetector(
+          child: Icon(Icons.search),
+          onTap: () {
+            setState(() {
+              //این متد دوباره ریرندر میکنه و نتیجه رو تغییر میده
+              //اپ بار رو تغییر میده
+              _currentAppBar = 'searchAppBar';
+            });
+          },
+        ),
+        new Padding(padding: const EdgeInsets.symmetric(horizontal: 5)),
+        new PopupMenuButton<String>(onSelected: (String choice) {
+          print(choice);
+        }, itemBuilder: (BuildContext context) {
+          return [
+            new PopupMenuItem(
+                value: "new_group",
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    children: [
+                      Text("گروه جدید", textDirection: TextDirection.rtl)
+                    ],
+                  ),
+                )),
+            new PopupMenuItem(
+              value: 'setting',
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: Row(
+                  children: [Text('تنظیمات', textDirection: TextDirection.rtl)],
+                ),
+              ),
+            )
+          ];
+        })
+      ],
+    );
+    //اپ بار در صورتی که ایکون سرچ کلیک شود این اپ بار نمایش داده خواهد شد
+    SliverAppBar searchAppBar = SliverAppBar(
+      backgroundColor: Colors.white,
+      title: TextField(
+        decoration:
+            InputDecoration(border: InputBorder.none, hintText: 'جستجو ...'),
+      ),
+      pinned: true,
+      floating: true,
+      elevation: 5,
+      //برای دادن پدینگ بین تکست فیلد و ایکون استفاده کردیم
+      leading: new GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 12),
+          child: Icon(Icons.arrow_back, color: Color(0xff075e54)),
+        ),
+        onTap: () {
+          //این متد دوباره ریرندر میکنه و نتیجه رو تغییر میده
+          setState(() {
+            _currentAppBar = 'mainAppBar';
+          });
+        },
+      ),
+    );
+
+    appBarList = <String, SliverAppBar>{
+      'mainAppBar': mainAppBar,
+      'searchAppBar': searchAppBar
+    };
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: new Color(0xff075e54),
-        title: new Text('واتساپ'),
-        elevation: 5,
-        bottom: new TabBar(
-            controller: tabController,
-            indicatorColor: Colors.white,
-            tabs: <Widget>[
-              new Tab(icon: new Icon(Icons.camera_alt)),
-              new Tab(
-                text: "چت ها",
-              ),
-              new Tab(
-                text: "وضعیت",
-              ),
-              new Tab(
-                text: "تماس ها",
-              ),
-            ]),
-        actions: [
-          new Icon(Icons.search),
-          new Padding(padding: const EdgeInsets.symmetric(horizontal: 5)),
-          new PopupMenuButton<String>(onSelected: (String choice) {
-            print(choice);
-          }, itemBuilder: (BuildContext context) {
-            return [
-              new PopupMenuItem(
-                  value: "new_group",
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Row(
-                      children: [
-                        Text("گروه جدید", textDirection: TextDirection.rtl)
-                      ],
-                    ),
-                  )),
-              new PopupMenuItem(
-                value: 'setting',
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Row(
-                    children: [
-                      Text('تنظیمات', textDirection: TextDirection.rtl)
-                    ],
-                  ),
-                ),
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              //برای دادن sliverAppBar به Widget باید از این متد استفاده کرد
+              SliverOverlapAbsorber(
+                sliver: appBarList[_currentAppBar],
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               )
             ];
-          })
-        ],
-      ),
-      body: new TabBarView(controller: tabController, children: <Widget>[
-        new CameraScreen(),
-        new ChatScreen(),
-        new StatusScreen(),
-        new CallScreen()
-      ]),
+          },
+          body: _currentAppBar == 'mainAppBar'
+              ? new TabBarView(controller: tabController, children: <Widget>[
+                  new CameraScreen(),
+                  new ChatScreen(),
+                  new StatusScreen(),
+                  new CallScreen()
+                ])
+              : new Center(
+                  child: Text('Search'),
+                )),
       floatingActionButton: new FloatingActionButton(
           // backgroundColor: new Color(0xff25d366),
           backgroundColor: Theme.of(context).accentColor,
