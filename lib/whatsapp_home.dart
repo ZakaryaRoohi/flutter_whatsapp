@@ -60,8 +60,10 @@ class WhatsAppHomeState extends State<WhatsAppHome>
         new Padding(padding: const EdgeInsets.symmetric(horizontal: 5)),
         new PopupMenuButton<String>(onSelected: (String choice) {
           if (choice == 'setting') {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SettingScreen()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => SettingScreen()));
+            //استفاده از routes
+            Navigator.pushNamed(context, "/setting");
           } else if (choice == 'new_group') {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => NewGroupScreen()));
@@ -155,8 +157,9 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreateChatScreen()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => CreateChatScreen()));
+            Navigator.pushNamed(context, "/new_chat");
           }),
     );
   }
