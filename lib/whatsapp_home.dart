@@ -30,6 +30,7 @@ class WhatsAppHomeState extends State<WhatsAppHome>
       pinned: true,
       floating: true,
       elevation: 5,
+
       bottom: TabBar(
           controller: tabController,
           indicatorColor: Colors.white,
@@ -124,6 +125,7 @@ class WhatsAppHomeState extends State<WhatsAppHome>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+
       body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[

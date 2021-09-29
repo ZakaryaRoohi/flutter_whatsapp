@@ -62,7 +62,8 @@ class SingleChatScreen extends StatelessWidget {
                         child: Text('صفحه دوم')),
                     TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          //اریال اطلاعات هنگام pop کردن
+                          Navigator.pop(context,"سلام ${this.data.name}");
                         },
                         child: Text('برگشت')),
                   ],

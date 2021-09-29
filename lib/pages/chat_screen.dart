@@ -5,7 +5,9 @@ import 'package:flutter_whatsapp/pages/single_chat_screen.dart';
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return new ListView.builder(
+
         itemCount: dummyData.length,
         itemBuilder: (context, index) {
           return new Column(
@@ -16,11 +18,7 @@ class ChatScreen extends StatelessWidget {
               //تمام تاچ ها رو میگیره
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SingleChatScreen(data: dummyData[index])));
+                _navigateAndDisplaySomeMessage(context , dummyData[index]);
                 },
                 child: new ListTile(
                   leading: new CircleAvatar(
@@ -53,5 +51,15 @@ class ChatScreen extends StatelessWidget {
             ],
           );
         });
+  }
+  _navigateAndDisplaySomeMessage(BuildContext context, ChatModel data) async{
+    //await یعنی منتظر جوابش بمون
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                SingleChatScreen(data:data)));
+
+    Scaffold.of(context).showSnackBar(new SnackBar(content: Text(result,style: TextStyle(fontFamily: 'Vazir'),)));
   }
 }
