@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_whatsapp/pages/call_screen.dart';
 import 'package:flutter_whatsapp/pages/camera_screen.dart';
 import 'package:flutter_whatsapp/pages/chat_screen.dart';
+import 'package:flutter_whatsapp/pages/create_chat_screen.dart';
 import 'package:flutter_whatsapp/pages/status_screen.dart';
 
 class WhatsAppHome extends StatefulWidget {
@@ -144,7 +145,10 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             color: Colors.white,
           ),
           onPressed: () {
-            print('open Chat!');
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateChatScreen())
+            );
           }),
     );
   }
