@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_whatsapp/pages/Setting_screen.dart';
 import 'package:flutter_whatsapp/pages/call_screen.dart';
 import 'package:flutter_whatsapp/pages/camera_screen.dart';
 import 'package:flutter_whatsapp/pages/chat_screen.dart';
 import 'package:flutter_whatsapp/pages/create_chat_screen.dart';
+import 'package:flutter_whatsapp/pages/new_group_screen.dart';
 import 'package:flutter_whatsapp/pages/status_screen.dart';
 
 class WhatsAppHome extends StatefulWidget {
@@ -56,7 +58,13 @@ class WhatsAppHomeState extends State<WhatsAppHome>
         ),
         new Padding(padding: const EdgeInsets.symmetric(horizontal: 5)),
         new PopupMenuButton<String>(onSelected: (String choice) {
-          print(choice);
+          if (choice == 'setting') {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SettingScreen()));
+          } else if (choice == 'new_group') {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => NewGroupScreen()));
+          }
         }, itemBuilder: (BuildContext context) {
           return [
             new PopupMenuItem(
@@ -145,10 +153,8 @@ class WhatsAppHomeState extends State<WhatsAppHome>
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateChatScreen())
-            );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateChatScreen()));
           }),
     );
   }
