@@ -54,10 +54,24 @@ class SingleChatScreen extends StatelessWidget {
                   children: [
                     TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CameraScreen()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => CameraScreen()));
+
+
+                          ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+                            content: Text('صفحه دومی وجود ندارد!'),
+                            leading: const Icon(Icons.info),
+                            backgroundColor: Colors.yellow,
+                            actions: [
+                              TextButton(
+                                child: const Text('Dismiss'),
+                                onPressed: () =>
+                                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                              ),
+                            ],
+                          ));
                         },
                         child: Text('صفحه دوم')),
                     TextButton(
