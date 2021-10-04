@@ -8,35 +8,76 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => MyAppState();
+
+
+}
+
+class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+
+  late AnimationController controller;
+
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = AnimationController(
+        vsync: this, duration: const Duration(microseconds: 2000));
+    animation = Tween(begin: 0.0, end: 300.0).animate(
+        CurvedAnimation(parent: controller, curve: Curves.easeIn));
+
+
+    controller.addListener(() {
+      if(controller.isCompleted){
+        controller.reverse();
+      }else if(controller.isDismissed){
+        controller.forward();
+      }
+    })
+  }
+
+
+//Animation
+  //Animation Controller
+  //Tween
+  //Animation Builder
+
+
+  Widget _animationBuilder(BuildContext context, Widget child) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      height: animation.value,
+      width: animation.value,
+      child: FlutterLogo(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData(fontFamily: 'Vazir');
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WatsApp',
-      // theme: ThemeData(
-      //   fontFamily: 'Vazir',
-      //
-      //     primaryColor:new Color(0xff075e54),
-      //   accentColor: new Color(0xff25d366),
-      //
-      // ),
-      theme: theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-              primary: Color(0xff075e54), secondary: Color(0xff25d366))),
-      //اولین صفحه ای که بالا میاد
-      initialRoute: "/splash_screen",
-      routes: {
-        //این همون home خودمون فرقی نداره
-        "/": (context) => Directionality(
-            textDirection: TextDirection.rtl, child: WhatsAppHome()),
-        "/splash_screen": (context) => new Directionality(
-            textDirection: TextDirection.rtl, child: SplashScreen()),
-        "/setting": (context) => SettingScreen(),
-        "/new_chat": (context) => CreateChatScreen(),
-      },
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                  animation: controller, builder: _animationBuilder),
+              ElevatedButton(onPressed: () {
+                controller.forward();
+              }, child: Text('Run'))
+            ],
+          ),
+        ),
+      ),
       // home:Directionality(textDirection: TextDirection.rtl, child: WhatsAppHome()) ,
     );
   }
+
 }
