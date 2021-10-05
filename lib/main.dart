@@ -3,6 +3,7 @@ import 'package:flutter_whatsapp/pages/Setting_screen.dart';
 import 'package:flutter_whatsapp/pages/create_chat_screen.dart';
 import 'package:flutter_whatsapp/pages/splash_screen.dart';
 import 'package:flutter_whatsapp/whatsapp_home.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(MyApp());
@@ -26,18 +27,18 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     super.initState();
     controller = AnimationController(
-        vsync: this, duration: const Duration(microseconds: 2000));
+        vsync: this, duration: const Duration(milliseconds: 2000));
     animation = Tween(begin: 0.0, end: 300.0).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeIn));
 
 
     controller.addListener(() {
-      if(controller.isCompleted){
+      if (controller.isCompleted) {
         controller.reverse();
-      }else if(controller.isDismissed){
+      } else if (controller.isDismissed) {
         controller.forward();
       }
-    })
+    });
   }
 
 
@@ -47,7 +48,7 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   //Animation Builder
 
 
-  Widget _animationBuilder(BuildContext context, Widget child) {
+  Widget _animationBuilder(BuildContext context, Widget? child) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       height: animation.value,
@@ -69,6 +70,14 @@ class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             children: [
               AnimatedBuilder(
                   animation: controller, builder: _animationBuilder),
+              // AnimatedBuilder(animation: controller,
+              //     child: FlutterLogo(),
+              //     builder: (BuildContext context, Widget? child) {
+              //       return Transform.rotate(
+              //         angle: controller.value * 2.0 * math.pi,
+              //         child: child,
+              //       );
+              //     }),
               ElevatedButton(onPressed: () {
                 controller.forward();
               }, child: Text('Run'))
