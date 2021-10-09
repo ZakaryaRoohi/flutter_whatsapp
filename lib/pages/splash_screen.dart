@@ -19,7 +19,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
   navigationPage(){
     // Navigator.pop(context);
-    Navigator.of(context).pushNamed('/');
+    Navigator.of(context).pushReplacementNamed('/login');
 
   }
 
