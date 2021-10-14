@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_whatsapp/animations/signin_animation.dart';
 import 'package:flutter_whatsapp/components/Form.dart';
 import 'package:flutter_whatsapp/models/chat_model.dart';
 import 'package:flutter_whatsapp/pages/camera_screen.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => LoginScreenState();
+}
+//this steps show ho to add animation to login button code is "loginButton'
+// "loginButton 1) convert loginScreen class to StateFulWidget
+class LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
+  // "loginButton 2) define an Animation Controller
+
+  late AnimationController _loginButtonController;
+
+  @override
+  void initState() {
+    super.initState();
+    // "loginButton 3) initial Animation Controller should use  " with SingleTickerProviderStateMixin"
+    _loginButtonController = new AnimationController(
+        vsync: this, duration: Duration(milliseconds: 3000));
+  }
+
+  @override
+  void dispose() {
+    // "loginButton 4) dispose animation Controller in dispose method
+    _loginButtonController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    timeDilation = 0.4;
     var page = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -46,27 +76,16 @@ class LoginScreen extends StatelessWidget {
                     ))
               ],
             ),
-            Container(
-                margin: const EdgeInsets.only(bottom: 30),
-                width: 230,
-                height: 60,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Color(0xff075e54),
-                    borderRadius: BorderRadius.all(const Radius.circular(30))),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  },
-                  child: Text(
-                    "ورود",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: 0.3),
-                  ),
-                ))
+            // "loginButton 5) cut the peace of code that show button and create a new class to add it to that class use tween
+            GestureDetector(
+              // "loginButton 13) use GestureDetector to use on Tap on the button
+              onTap: () async{
+               await _loginButtonController.forward();
+               await _loginButtonController.reverse();
+              },
+              child:
+                  new SignInAnimation(controller: _loginButtonController.view),
+            ),
           ],
         ),
       ),
