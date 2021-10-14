@@ -14,8 +14,9 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   // "loginButton 2) define an Animation Controller
-
   late AnimationController _loginButtonController;
+
+  late final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -63,7 +64,7 @@ class LoginScreenState extends State<LoginScreen>
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FormContainer(),
+                FormContainer(formKey:_formKey),
                 TextButton(
                     onPressed: () {},
                     child: Text(
@@ -80,8 +81,10 @@ class LoginScreenState extends State<LoginScreen>
             GestureDetector(
               // "loginButton 13) use GestureDetector to use on Tap on the button
               onTap: () async{
-               await _loginButtonController.forward();
-               await _loginButtonController.reverse();
+                if(_formKey.currentState!.validate()){
+                  await _loginButtonController.forward();
+                  await _loginButtonController.reverse();
+                }
               },
               child:
                   new SignInAnimation(controller: _loginButtonController.view),
