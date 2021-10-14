@@ -56,6 +56,7 @@ class AnimationDemoState extends State<AnimationDemo>
         },
         child: Center(
           child: Container(
+
             width: 300,
             height: 300,
             decoration: BoxDecoration(

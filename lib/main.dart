@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/splash_screen",
       routes: {
         //این همون home خودمون فرقی نداره
-        "/": (context) => Directionality(
+        "/home": (context) => Directionality(
             textDirection: TextDirection.rtl, child: WhatsAppHome()),
         "/login": (context) => new Directionality(
             textDirection: TextDirection.rtl, child: LoginScreen()),
