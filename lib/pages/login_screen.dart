@@ -98,6 +98,7 @@ class LoginScreenState extends State<LoginScreen>
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
+                  sendDataForLogin();
 
                   // ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
                   //   content: Text(_emailValue + _passwordValue),
@@ -112,14 +113,13 @@ class LoginScreenState extends State<LoginScreen>
                   //   ],
                   // ));
 
-                  await _loginButtonController.forward();
-                  await _loginButtonController.reverse();
 
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                        _emailValue + _passwordValue,
-                        style: TextStyle(fontFamily: 'Vazir'),
-                      )));
+
+                  // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //     content: Text(
+                  //       _emailValue + _passwordValue,
+                  //       style: TextStyle(fontFamily: 'Vazir'),
+                  //     )));
                 }
               },
               child:
@@ -130,4 +130,54 @@ class LoginScreenState extends State<LoginScreen>
       ),
     );
   }
+
+   sendDataForLogin() async{
+
+await _loginButtonController.animateTo(0.150);
+
+
+// await _loginButtonController.reverse;
+
+
+     // await _loginButtonController.forward();
+     // await _loginButtonController.reverse();
+  }
+
+  Future sendDataToServer() async{
+
+  }
 }
+
+
+//*********************************Future**************************
+
+// void main() async {
+//
+//   print('start');
+//
+// //   httpRequest('url')
+// //     .then((val){
+// //       print(val);
+// //     })
+// //     .catchError((){
+// //       print('error');
+// //     });
+//
+//
+// //   print(await httpRequest('url'));
+//
+//
+//   try{
+//     print(await httpRequest('url'));
+//   }catch(e){
+//     print(e);
+//   }
+//
+// }
+//
+//
+// Future<String> httpRequest(String url){
+//   return Future.delayed(Duration(seconds:2),(){
+//     return 'xxxxxxxxx';
+//   });
+// }
