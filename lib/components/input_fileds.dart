@@ -5,12 +5,12 @@ class InputFieldArea extends StatelessWidget {
   final bool obscure;
   final IconData icon;
   final validator;
+  final onSaved;
 
-  InputFieldArea(
-      {required this.hint,
-      required this.obscure,
-      required this.icon,
-      this.validator});
+  InputFieldArea({required this.hint,
+    required this.obscure,
+    required this.icon,
+    this.validator, this.onSaved,});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,7 @@ class InputFieldArea extends StatelessWidget {
         // },
 
         validator: validator,
+        onSaved: onSaved,
         obscureText: obscure,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
@@ -50,7 +51,7 @@ class InputFieldArea extends StatelessWidget {
             hintText: hint,
             hintStyle: const TextStyle(color: Colors.white, fontSize: 15),
             contentPadding:
-                const EdgeInsets.only(top: 15, right: 0, bottom: 20, left: 5)),
+            const EdgeInsets.only(top: 15, right: 0, bottom: 20, left: 5)),
       ),
     );
   }

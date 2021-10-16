@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => LoginScreenState();
 }
+
 //this steps show ho to add animation to login button code is "loginButton'
 // "loginButton 1) convert loginScreen class to StateFulWidget
 class LoginScreenState extends State<LoginScreen>
@@ -17,6 +18,16 @@ class LoginScreenState extends State<LoginScreen>
   late AnimationController _loginButtonController;
 
   late final _formKey = GlobalKey<FormState>();
+  late String _emailValue;
+  late String _passwordValue;
+
+ emailOnSaved(String? value) {
+    _emailValue = value!;
+  }
+
+  passwordOnSaved(String? value) {
+    _passwordValue = value!;
+  }
 
   @override
   void initState() {
@@ -35,7 +46,6 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-
     timeDilation = 0.4;
     var page = MediaQuery.of(context).size;
 
@@ -64,7 +74,11 @@ class LoginScreenState extends State<LoginScreen>
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FormContainer(formKey:_formKey),
+                FormContainer(
+                    formKey: _formKey,
+                    emailOnSaved: emailOnSaved,
+                    passwordOnSaved: passwordOnSaved,
+                ),
                 TextButton(
                     onPressed: () {},
                     child: Text(
@@ -80,10 +94,32 @@ class LoginScreenState extends State<LoginScreen>
             // "loginButton 5) cut the peace of code that show button and create a new class to add it to that class use tween
             GestureDetector(
               // "loginButton 13) use GestureDetector to use on Tap on the button
-              onTap: () async{
-                if(_formKey.currentState!.validate()){
+              onTap: () async {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+
+
+                  // ScaffoldMessenger.of(context).showMaterialBanner(MaterialBanner(
+                  //   content: Text(_emailValue + _passwordValue),
+                  //   leading: const Icon(Icons.info),
+                  //   backgroundColor: Colors.yellow,
+                  //   actions: [
+                  //     TextButton(
+                  //       child: const Text('Dismiss'),
+                  //       onPressed: () =>
+                  //           ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+                  //     ),
+                  //   ],
+                  // ));
+
                   await _loginButtonController.forward();
                   await _loginButtonController.reverse();
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        _emailValue + _passwordValue,
+                        style: TextStyle(fontFamily: 'Vazir'),
+                      )));
                 }
               },
               child:

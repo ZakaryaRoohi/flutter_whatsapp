@@ -5,8 +5,9 @@ import 'package:validators/validators.dart';
 class FormContainer extends StatelessWidget {
 
   final formKey;
-
-  FormContainer({@required this.formKey});
+  final  emailOnSaved;
+  final passwordOnSaved;
+  FormContainer({@required this.formKey, this.emailOnSaved, this.passwordOnSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class FormContainer extends StatelessWidget {
                 if(!isEmail(value!))
                   return "ایمیل وارد شده صحیح نمیباشد!";
                 },
+                onSaved: emailOnSaved,
               ),
               InputFieldArea(
                 hint: "پسورد",
@@ -36,6 +38,7 @@ class FormContainer extends StatelessWidget {
                 if(value!.length<5)
                     return 'رمز عبور حداقل باید 6 کاراکتر باشد!';
                 },
+                onSaved: passwordOnSaved,
               ),
             ],
           ))
