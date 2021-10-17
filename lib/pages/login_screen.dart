@@ -6,7 +6,7 @@ import 'package:flutter_whatsapp/components/Form.dart';
 
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_whatsapp/services/auth-services.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -24,7 +24,6 @@ class LoginScreenState extends State<LoginScreen>
   late final _scaffoldKey = GlobalKey<ScaffoldState>();
   late String _emailValue;
   late String _passwordValue;
-
 
   emailOnSaved(String? value) {
     _emailValue = value!;
@@ -137,32 +136,46 @@ class LoginScreenState extends State<LoginScreen>
 
   sendDataForLogin() async {
     await _loginButtonController.animateTo(0.150);
+// سرور جواب نمیده بهمین خاطر اینا رو کامنت کردم
+    // Map response = await (AuthService())
+    //     .sendDataToLogin({"email": _emailValue, "password": _passwordValue});
 
-    Map response = await (AuthService()).sendDataToLogin({"email": _emailValue, "password": _passwordValue}) ;
-
-    if(response['status']=='success'){
-
-      await _loginButtonController.forward();
-      Navigator.pushReplacementNamed(context, '/');
-
-    }else if (response['status']=='404'){
-      await _loginButtonController.reverse();
-      // _scaffoldKey.currentState.sh
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            'response failed',
-            style: TextStyle(fontFamily: 'Vazir'),
-          )));
-
-    }
+    // if (response['status'] == 'success') {
+    //   await _loginButtonController.forward();
+    //   Navigator.pushReplacementNamed(context, '/');
+    // } else if (response['status'] == '404') {
+    //   await _loginButtonController.reverse();
+    //   // _scaffoldKey.currentState.sh
+    //
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //       content: Text(
+    //     'response failed',
+    //     style: TextStyle(fontFamily: 'Vazir'),
+    //   )));
+    // }
     await _loginButtonController.forward();
+
+    // await storeUserData(response['data']);
+
+    await storeUserDataNoApi();
 
     // await _loginButtonController.reverse();
     Navigator.pushReplacementNamed(context, '/home');
   }
 
+  storeUserData(Map userData) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('user.api-token', userData['api_token']);
+    // await prefs.setInt('user.user_id', userData['user_id']);
 
+  }
+
+  storeUserDataNoApi() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('user.api_token', 'dfghdfyhfdhfdhsafsdtfgd');
+    await prefs.setInt('user.user_id', 1);
+  }
 }
 
 //*********************************Future**************************

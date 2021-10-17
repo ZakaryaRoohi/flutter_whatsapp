@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,27 +11,19 @@ class SplashScreen extends StatefulWidget {
   State<StatefulWidget> createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-
+class SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
   late Animation<double> animation;
 
-  startTime(){
-    var _duration = const Duration(seconds: 5);
-    return Timer(
-        _duration,
-        navigationPage
-    );
-  }
-  navigationPage(){
+  navigationToLogin() {
     // Navigator.pop(context);
     Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
   void initState() {
-
     super.initState();
 
     controller = AnimationController(
@@ -40,10 +31,8 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     animation = Tween(begin: 0.0, end: 300.0).animate(
         CurvedAnimation(parent: controller, curve: Curves.easeOutExpo));
 
-
-    startTime();
     controller.forward();
-
+    checkLogin();
   }
 
   @override
@@ -51,25 +40,21 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
     controller.dispose();
     super.dispose();
   }
+
   Widget _animationBuilder(BuildContext context, Widget? child) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       height: animation.value,
       width: animation.value,
-      child:  Container(
+      child: Container(
         width: 325,
         height: 325,
         decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/icons/whatsapp_icon.png"))),
-
       ),
-
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,25 +81,29 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
             padding: EdgeInsets.only(bottom: 30),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CircularProgressIndicator(color: Colors.black,),
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
             ),
           )
         ],
       ),
-    );//494300140041
+    ); //494300140041
+  }
+
+  checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? apiToken = prefs.getString('user.api_token');
+
+    if (apiToken == null) navigationToLogin();
   }
 }
 
-
-
-
-
-
-
-
-
-
-
+// startTime() {
+//   var _duration = const Duration(seconds: 5);
+//   return Timer(_duration, navigationPageToLogin);
+// }
 
 
 
