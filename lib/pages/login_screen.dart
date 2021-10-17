@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_whatsapp/animations/signin_animation.dart';
 import 'package:flutter_whatsapp/components/Form.dart';
-import 'package:flutter_whatsapp/models/chat_model.dart';
-import 'package:flutter_whatsapp/pages/camera_screen.dart';
+
 import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:flutter_whatsapp/services/auth-services.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,10 +21,12 @@ class LoginScreenState extends State<LoginScreen>
   late AnimationController _loginButtonController;
 
   late final _formKey = GlobalKey<FormState>();
+  late final _scaffoldKey = GlobalKey<ScaffoldState>();
   late String _emailValue;
   late String _passwordValue;
 
- emailOnSaved(String? value) {
+
+  emailOnSaved(String? value) {
     _emailValue = value!;
   }
 
@@ -50,6 +55,7 @@ class LoginScreenState extends State<LoginScreen>
     var page = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: _scaffoldKey,
       // resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
@@ -75,9 +81,9 @@ class LoginScreenState extends State<LoginScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FormContainer(
-                    formKey: _formKey,
-                    emailOnSaved: emailOnSaved,
-                    passwordOnSaved: passwordOnSaved,
+                  formKey: _formKey,
+                  emailOnSaved: emailOnSaved,
+                  passwordOnSaved: passwordOnSaved,
                 ),
                 TextButton(
                     onPressed: () {},
@@ -113,8 +119,6 @@ class LoginScreenState extends State<LoginScreen>
                   //   ],
                   // ));
 
-
-
                   // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   //     content: Text(
                   //       _emailValue + _passwordValue,
@@ -131,23 +135,35 @@ class LoginScreenState extends State<LoginScreen>
     );
   }
 
-   sendDataForLogin() async{
+  sendDataForLogin() async {
+    await _loginButtonController.animateTo(0.150);
 
-await _loginButtonController.animateTo(0.150);
+    Map response = await (AuthService()).sendDataToLogin({"email": _emailValue, "password": _passwordValue}) ;
 
+    if(response['status']=='success'){
 
-// await _loginButtonController.reverse;
+      await _loginButtonController.forward();
+      Navigator.pushReplacementNamed(context, '/');
 
+    }else if (response['status']=='404'){
+      await _loginButtonController.reverse();
+      // _scaffoldKey.currentState.sh
 
-     // await _loginButtonController.forward();
-     // await _loginButtonController.reverse();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            'response failed',
+            style: TextStyle(fontFamily: 'Vazir'),
+          )));
+
+    }
+    await _loginButtonController.forward();
+
+    // await _loginButtonController.reverse();
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
-  Future sendDataToServer() async{
 
-  }
 }
-
 
 //*********************************Future**************************
 
