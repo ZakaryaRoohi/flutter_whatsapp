@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_whatsapp/services/auth-services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 
@@ -18,9 +19,16 @@ class SplashScreenState extends State<SplashScreen>
 
   late Animation<double> animation;
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   navigationToLogin() {
     // Navigator.pop(context);
     Navigator.of(context).pushReplacementNamed('/login');
+  }
+
+  navigationToHome() {
+    // Navigator.pop(context);
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 
   @override
@@ -60,6 +68,7 @@ class SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Color(0xff075e54),
       body: Stack(
         fit: StackFit.expand,
@@ -97,7 +106,81 @@ class SplashScreenState extends State<SplashScreen>
 
     String? apiToken = prefs.getString('user.api_token');
 
-    if (apiToken == null) navigationToLogin();
+    // if (apiToken == null) {
+    //   navigationToLogin();
+    // }
+
+    // چک میکنم ببینم یوزر وجود داره یا نه
+    // if (await checkInternetConnection()) {
+    //   await AuthService.checkApiToken(apiToken!)
+    //       ? navigationToHome()
+    //       : navigationToLogin();
+    // }
+
+    // I have no Api so just chek the api token exist or not
+    if (await checkInternetConnection()) {
+      apiToken == null
+      ? navigationToLogin()
+      :navigationToHome();
+
+
+    }
+  }
+
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    print(connectivityResult);
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)
+      return true;
+    else {
+      /*
+      _scaffoldKey.currentState!.showSnackBar(SnackBar(
+          duration: Duration(minutes: 1),
+          content: GestureDetector(
+            onTap: () {
+              _scaffoldKey.currentState!.hideCurrentSnackBar();
+              checkLogin();
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('ارتباط با اینترنت برقرار نیست. ارتباط خود را چک کنید!',
+                    style: TextStyle(fontFamily: 'Vazir')),
+                Icon(
+                  Icons.wifi_lock,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          )
+      ));
+
+       */
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: Duration(hours: 1),
+          content: GestureDetector(
+            onTap: () {
+              _scaffoldKey.currentState!.hideCurrentSnackBar();
+              checkLogin();
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                    'ارتباط با اینترنت برقرار نیست. لطفا ارتباط خود را بررسی کنید!',
+                    style: TextStyle(fontFamily: 'Vazir', fontSize: 12)),
+                Icon(
+                  Icons.refresh,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          )));
+
+      return false;
+    }
   }
 }
 
@@ -105,8 +188,6 @@ class SplashScreenState extends State<SplashScreen>
 //   var _duration = const Duration(seconds: 5);
 //   return Timer(_duration, navigationPageToLogin);
 // }
-
-
 
 // class SplashScreen extends StatefulWidget {
 //   @override
