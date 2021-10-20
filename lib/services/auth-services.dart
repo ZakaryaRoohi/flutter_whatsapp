@@ -21,7 +21,7 @@ class AuthService {
   static Future<bool> checkApiToken(String apiToken) async {
     // final response = await http.get("http://roocket.org/api/user?api_token=${apiToken}",headers:{'Accept':'application/json'} );
 
-    var url = Uri.parse("http://roocket.org/api/user?api_token=${apiToken}");
+    var url = Uri.parse("http://roocket.org/api/user?api_token=$apiToken");
     final response =
         await http.get(url, headers: {'Accept': 'application/json'});
 

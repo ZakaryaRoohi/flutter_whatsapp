@@ -5,7 +5,7 @@ import 'package:flutter_whatsapp/pages/camera_screen.dart';
 import 'package:flutter_whatsapp/pages/chat_screen.dart';
 import 'package:flutter_whatsapp/pages/create_chat_screen.dart';
 import 'package:flutter_whatsapp/pages/new_group_screen.dart';
-import 'package:flutter_whatsapp/pages/status_screen.dart';
+import 'package:flutter_whatsapp/pages/products_screen.dart';
 
 class WhatsAppHome extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class WhatsAppHomeState extends State<WhatsAppHome>
               text: "چت ها",
             ),
             Tab(
-              text: "وضعیت",
+              text: "محصولات",
             ),
             Tab(
               text: "تماس ها",
@@ -143,7 +143,7 @@ class WhatsAppHomeState extends State<WhatsAppHome>
               ? new TabBarView(controller: tabController, children: <Widget>[
                   new CameraScreen(),
                   new ChatScreen(),
-                  new StatusScreen(),
+                  new ProductsScreen(),
                   new CallScreen()
                 ])
               : new Center(

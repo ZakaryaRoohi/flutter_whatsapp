@@ -20,8 +20,8 @@ class ChatScreen extends StatelessWidget {
                 },
                 child: new ListTile(
                   leading: new CircleAvatar(
-                    backgroundImage:
-                        new NetworkImage(dummyData[index].avatarUrl),
+                    // backgroundImage:
+                    //     new NetworkImage(dummyData[index].avatarUrl),
                     backgroundColor: Colors.grey,
                   ),
                   title: new Row(
