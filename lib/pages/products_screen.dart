@@ -43,9 +43,12 @@ class ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Center(
-      child: new Text("Products" , style: TextStyle(fontSize: 20),),
-    );
+    return ListView.builder(
+        itemCount: _products.length,
+        itemBuilder: (BuildContext context,int index){
+
+        }
+        );
   }
 
 }
